@@ -10,14 +10,16 @@ public class Baralho {
 	//instancia o baralho
 	public Baralho () {
 		
-		Carta carta = new Carta();
 		
 		for (int i = 0; i < 4; i++) {
 			
-			carta.setNaipePorValor(i);
 			
 			for (int f = 10; f < 101; f = f +10) {
 				
+				//coloquei dentro do for porque assim ele sempre faz uma carta nova e fora ele usa sempre a mesma e só altera o valor dela, aqui vai ter as 40
+				Carta carta = new Carta();
+				
+				carta.setNaipePorValor(i);
 				carta.setModeloPorPeso(f);
 				carta.setPeso(f);
 				this.baralho.add(carta);
