@@ -27,6 +27,18 @@ public class Baralho {
 		System.out.println(baralho);
 	}
 	
+	public List<Carta> getBaralho(){
+		return this.baralho;
+	}
+	
+	public List<Carta> entregarCartas() {
+		List<Carta> cartas = new ArrayList();
+		for(int i = 0; i <4; i++) {
+			cartas.add(this.baralho.get(i));
+			this.baralho.remove(i);
+		}
+		return cartas;
+	}
 
 	
 }
