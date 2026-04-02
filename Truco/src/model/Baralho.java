@@ -9,6 +9,7 @@ public class Baralho {
 	List<Carta> baralho = new ArrayList<>();
 	
 	//instancia o baralho
+	//teste para merge
 	public Baralho () {
 		
 		for (int i = 0; i < 4; i++) {
