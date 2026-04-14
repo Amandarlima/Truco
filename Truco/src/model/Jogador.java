@@ -33,14 +33,14 @@ public class Jogador {
 		this.mao = mao;
 	}
 	
-	public void jogarCarta(int i) {
-		this.mao.remove(i);
+	public Carta jogarCarta(int i) {
+		
+		return this.mao.remove(i);
+		 
 	}
 	
 	public void receberCarta(Carta carta) {
 		this.mao.add(carta);
 	}
-	
-	//pedir truco
 	
 }

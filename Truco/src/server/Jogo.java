@@ -3,6 +3,10 @@ package server;
 import java.io.*;
 import java.net.*;
 
+import model.Baralho;
+import model.Dupla;
+import model.Jogador;
+
 public class Jogo implements Runnable {
 
     private Socket jogador1;
@@ -28,10 +32,47 @@ public class Jogo implements Runnable {
 
             out1.println("Você é o jogador 1");
             out2.println("Você é o jogador 2");
-
+            
+            Jogador jogador_1 = new Jogador();
+            Jogador jogador_2 = new Jogador();
+            
+            Dupla dupla_impar = new Dupla();
+            dupla_impar.addDupla(jogador_1);
+            
+            Dupla dupla_par = new Dupla();
+            dupla_par.addDupla(jogador_2);
+            
+            while (dupla_impar.getPontuacao() < 12 || dupla_par.getPontuacao() < 12) {
+            	
+            	Baralho baralho = new Baralho();
+            	
+            	
+            	
+            	
+            	
+            	
+            	
+            }
             //ainda ta implementado para dois jogadores só para teste
             out1.println("Sua vez:");
             String jogada1 = in1.readLine();
+            
+            switch (jogada1) {
+            	
+            case "1":
+            	
+            	jogador_1.jogarCarta();
+            	
+            	break;
+            
+            case "2":
+            	
+            	jogador_1.;
+            	
+            	break;
+            
+            
+            }
 
             out2.println("Sua vez:");
             String jogada2 = in2.readLine();

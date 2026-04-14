@@ -9,6 +9,8 @@ public class Dupla {
 	
 	public Dupla () {
 		
+		this.pontuacao = 0;
+		
 	}
 	
 	public int getPontuacao() {
@@ -25,6 +27,10 @@ public class Dupla {
 	
 	public void setDupla(List<Jogador> dupla) {
 		this.dupla = dupla;
+	}
+	
+	public void addDupla(Jogador jogador) {
+		this.dupla.add(jogador);
 	}
 	
 	public void addPontuacao(int pontos) {
