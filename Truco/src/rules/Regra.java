@@ -6,8 +6,9 @@ import java.util.List;
 import model.Carta;
 import model.Modelo;
 
-public class regra {
+public class Regra {
 
+	//comparar cartas
 	public void comparar_cartas(List<Carta> monte) {
 		
 	}
@@ -53,9 +54,9 @@ public class regra {
 
 	    return maiorCarta;
 	}
-	
+
 	//comparar manilhas
-	
+
 	public List<Carta> filtrar_manilhas(List<Carta> cartasNaMesa, Carta cartaVira) {
 	    List<Carta> manilhasEncontradas = new ArrayList<>();
 	    
@@ -84,7 +85,7 @@ public class regra {
 	
 	
 	//verificar vitoria
-	
+
 	public List<Integer> verificar_vitoria(List<Carta> cartasNaMesa, Carta cartaVira) {
 		List<Integer> idsVencedores = new ArrayList<>();
 
@@ -112,16 +113,7 @@ public class regra {
 
 		return idsVencedores;
 	}
-	
-	//pedir truco
-	
-	//mao de onze vantagem
-	
-	//mao de onze empate
-	
-	//empate
-	
-	//tornar no baralho
-	
-	//trocar iniciador
 }
+	//pedir truco
+
+	//mao de onze vantagem

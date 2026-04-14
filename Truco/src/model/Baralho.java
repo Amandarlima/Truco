@@ -12,7 +12,7 @@ public class Baralho {
 	// teste para merge
 	public Baralho() {
 
-		for (int i = 0; i < 3; i++) {
+		for (int i = 1; i < 4; i++) {
 			for (int f = 10; f < 101; f = f + 10) {
 
 				Carta carta = new Carta();
@@ -35,8 +35,7 @@ public class Baralho {
 		List<Carta> cartas = new ArrayList<>();
 
 		for (int i = 0; i < 3; i++) {
-			cartas.add(this.baralho.get(i));
-			this.baralho.remove(i);
+			cartas.add(this.baralho.remove(0));
 		}
 		return cartas;
 	}

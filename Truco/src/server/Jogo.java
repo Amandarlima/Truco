@@ -2,6 +2,7 @@ package server;
 
 import java.io.*;
 import java.net.*;
+import java.util.*;
 
 import model.Baralho;
 import model.Carta;
@@ -11,252 +12,136 @@ import rules.Regra;
 
 public class Jogo implements Runnable {
 
-    private Socket jogador1;
-    private Socket jogador2;
+	private Socket jogador1;
+	private Socket jogador2;
 
-    private BufferedReader in1;
-    private BufferedReader in2;
+	public Jogo(Socket jogador1, Socket jogador2) {
+		this.jogador1 = jogador1;
+		this.jogador2 = jogador2;
+	}
 
-    private PrintWriter out1;
-    private PrintWriter out2;
+	@Override
+	public void run() {
+		try {
 
-    private Jogador j1;
-    private Jogador j2;
+			// le o que o jogador escreveu
+			BufferedReader in1 = new BufferedReader(new InputStreamReader(jogador1.getInputStream()));
+			// manda mensagem do servidor para o jogador
+			PrintWriter out1 = new PrintWriter(jogador1.getOutputStream(), true);
 
-    private Dupla dupla1;
-    private Dupla dupla2;
+			BufferedReader in2 = new BufferedReader(new InputStreamReader(jogador2.getInputStream()));
+			PrintWriter out2 = new PrintWriter(jogador2.getOutputStream(), true);
 
-    public Jogo(Socket jogador1, Socket jogador2) {
-        this.jogador1 = jogador1;
-        this.jogador2 = jogador2;
-    }
+			out1.println("Você é o jogador 1");
+			out2.println("Você é o jogador 2");
 
-    @Override
-    public void run() {
-        try {
-            inicializarJogadores();
+			Jogador j1 = new Jogador();
+			Jogador j2 = new Jogador();
 
-            while (!jogoTerminou()) {
+			Dupla d1 = new Dupla();
+			d1.addDupla(j1);
 
-                Baralho baralho = new Baralho();
+			Dupla d2 = new Dupla();
+			d2.addDupla(j2);
 
-<<<<<<< HEAD
-                distribuirCartas(baralho);
-                mostrarCartas();
+			Regra regra = new Regra();
 
-                jogarRodada();
+			while (d1.getPontuacao() < 12 && d2.getPontuacao() < 12) {
 
-                mostrarPlacar();
-=======
-            out1.println("Você é o jogador 1");
-            out2.println("Você é o jogador 2");
-            
-            Jogador jogador_1 = new Jogador();
-            Jogador jogador_2 = new Jogador();
-            
-            Dupla dupla_impar = new Dupla();
-            dupla_impar.setId(1);
-            dupla_impar.addDupla(jogador_1);
-            
-            Dupla dupla_par = new Dupla();
-            dupla_par.setId(2);
-            dupla_par.addDupla(jogador_2);
-            
-            while (dupla_impar.getPontuacao() < 12 || dupla_par.getPontuacao() < 12) {
-            	
-            	Baralho baralho = new Baralho();
-            	
-            	
-            	
-            	
-            	
-            	
-            	
-            }
-            //ainda ta implementado para dois jogadores só para teste
-            out1.println("Sua vez:");
-            String jogada1 = in1.readLine();
-            
-            switch (jogada1) {
-            	
-            case "1":
-            	
-            	jogador_1.jogarCarta();
-            	
-            	break;
-            
-            case "2":
-            	
-            	jogador_1.;
-            	
-            	break;
-            
-            
->>>>>>> refs/remotes/origin/forth
-            }
+				Baralho baralho = new Baralho();
 
-            finalizaJogo();
+				j1.setMao(baralho.entregarCartas());
+				j2.setMao(baralho.entregarCartas());
 
-          //proteção caso estourar erro
-        } catch (Exception e) {
-            System.out.println("Erro na comunicação com jogadores " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
+				int vencedorRodada = Tempo(in1, out1, in2, out2, j1, j2, regra);
 
-    
-    // organizei em metodos para ficar mais organizado
-    private void inicializarJogadores() throws IOException {
-    	
-    	//le o que o jogador escreveu 
-        in1 = new BufferedReader(new InputStreamReader(jogador1.getInputStream()));
-        //manda mensagem do servidor para o jogador 
-        out1 = new PrintWriter(jogador1.getOutputStream(), true);
+				if (vencedorRodada == 1) {
+					d1.addPontuacao(1);
+				} else if (vencedorRodada == 2) {
+					d2.addPontuacao(1);
+				}
 
-        in2 = new BufferedReader(new InputStreamReader(jogador2.getInputStream()));
-        out2 = new PrintWriter(jogador2.getOutputStream(), true);
+				out1.println("Placar: " + d1.getPontuacao() + " x " + d2.getPontuacao());
+				out2.println("Placar: " + d1.getPontuacao() + " x " + d2.getPontuacao());
+			}
 
-        j1 = new Jogador();
-        j2 = new Jogador();
+			if (d1.getPontuacao() >= 12) {
+				out1.println("Você venceu o jogo!");
+				out2.println("Você perdeu o jogo!");
+			} else {
+				out2.println("Você venceu o jogo!");
+				out1.println("Você perdeu o jogo!");
+			}
 
-      //ainda ta implementado para dois jogadores só para teste
-        dupla1 = new Dupla();
-        dupla1.addDupla(j1);
+			// proteção caso estourar erro
+		} catch (Exception e) {
+			System.out.println("Erro na comunicação com jogadores " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
 
-        dupla2 = new Dupla();
-        dupla2.addDupla(j2);
+	private int Tempo(BufferedReader in1, PrintWriter out1, BufferedReader in2, PrintWriter out2, Jogador j1,
+			Jogador j2, Regra regra) throws IOException {
 
-        out1.println("Você é o jogador 1");
-        out2.println("Você é o jogador 2");
-    }
+		int jogador1 = 0;
+		int jogador2 = 0;
 
-  // por enquanto deixei assim para testar no console ai vc ve certinho o que é cada regra e tals
-    private void distribuirCartas(Baralho baralho) {
-        j1.setMao(baralho.entregarCartas());
-        j2.setMao(baralho.entregarCartas());
-    }
+		for (int mao = 1; mao <= 3; mao++) {
 
-    private void mostrarCartas() {
-        mostrarMao(out1, j1);
-        mostrarMao(out2, j2);
-    }
+			out1.println("Mão " + mao);
+			out2.println("Mão " + mao);
 
-    private void mostrarMao(PrintWriter out, Jogador j) {
-        out.println("Suas cartas:");
-        for (int i = 0; i < j.getMao().size(); i++) {
-            out.println(i + " - " + j.getMao().get(i));
-        }
-    }
+			// jogador 1
+			out1.println("Sua vez:");
+			int i1 = Integer.parseInt(in1.readLine());
+			Carta c1 = j1.jogarCarta(i1);
+			c1.setId(1);
 
-    private void jogarRodada() throws IOException {
+			// jogador 2
+			out2.println("Sua vez:");
+			int i2 = Integer.parseInt(in2.readLine());
+			Carta c2 = j2.jogarCarta(i2);
+			c2.setId(2);
 
-        int vitoriasJ1 = 0;
-        int vitoriasJ2 = 0;
+			out1.println("Você jogou: " + c1);
+			out1.println("Jogador 2 jogou: " + c2);
 
-        for (int mao = 1; mao <= 3; mao++) {
+			out2.println("Você jogou: " + c2);
+			out2.println("Jogador 1 jogou: " + c1);
 
-            int resultado = Tempo (mao);
+			List<Carta> mesa = Arrays.asList(c1, c2);
+			List<Integer> vencedores = regra.verificar_vitoria(mesa, null);
 
-            if (resultado == 1) vitoriasJ1++;
-            if (resultado == 2) vitoriasJ2++;
+			if (vencedores.size() == 1) {
 
-            if (vitoriasJ1 == 2 || vitoriasJ2 == 2) break;
-        }
+				int vencedor = vencedores.get(0);
 
-        if (vitoriasJ1 > vitoriasJ2) {
-            dupla1.addPontuacao(1);
-            out1.println("Você venceu a rodada!");
-            out2.println("Você perdeu a rodada!");
+				if (vencedor == 1) {
+					jogador1++;
+					out1.println("Você venceu a mão!");
+					out2.println("Você perdeu a mão!");
+				} else {
+					jogador2++;
+					out2.println("Você venceu a mão!");
+					out1.println("Você perdeu a mão!");
+				}
 
-        } else if (vitoriasJ2 > vitoriasJ1) {
-            dupla2.addPontuacao(1);
-            out2.println("Você venceu a rodada!");
-            out1.println("Você perdeu a rodada!");
+			} else {
+				out1.println("Empate!");
+				out2.println("Empate!");
+			}
 
-        } else {
-            out1.println("empatou!");
-            out2.println("empatou! ");
-        }
-    }
+			// alguém fez 2 primeiro
+			if (jogador1 == 2 || jogador2 == 2)
+				break;
+		}
 
-     private int Tempo(int numeroMao) throws IOException {
+		// vencedor da rodada
+		if (jogador1 > jogador2)
+			return 1;
+		if (jogador2 > jogador1)
+			return 2;
 
-        out1.println("Mão " + numeroMao);
-        out2.println("Mão " + numeroMao);
-
-        int indice1 = leJogada(in1, out1, j1);
-        var carta1 = j1.jogarCarta(indice1);
-
-        int indice2 = leJogada(in2, out2, j2);
-        var carta2 = j2.jogarCarta(indice2);
-
-        enviarJogadas(carta1, carta2);
-
-        return resolveTempo(carta1, carta2);
-    }
-
-    private int leJogada(BufferedReader in, PrintWriter out, Jogador j) throws IOException {
-        int indice;
-
-        while (true) {
-            try {
-                out.println("Sua vez, digite o número da carta: ");
-                indice = Integer.parseInt(in.readLine());
-
-                if (indice >= 0 && indice < j.getMao().size()) {
-                    return indice;
-                } else {
-                    out.println("Escolha inválida!");
-                }
-
-            } catch (Exception e) {
-                out.println("Digite um número válido!");
-            }
-        }
-    }
-
-    private void enviarJogadas(Carta carta1, Carta carta2) {
-        out1.println("Você jogou: " + carta1);
-        out1.println("Jogador 2 jogou: " + carta2);
-
-        out2.println("Você jogou: " + carta2);
-        out2.println("Jogador 1 jogou: " + carta1);
-    }
-
-    private int resolveTempo(Carta carta1, Carta carta2) {
-
-        int resultado = Regra.compararCartas(carta1, carta2); // vai vir da classe regras
-
-        if (resultado == 1) {
-            out1.println("Você venceu a mão!");
-            out2.println("Você perdeu a mão!");
-        } else if (resultado == 2) {
-            out2.println("Você venceu a mão!");
-            out1.println("Você perdeu a mão!");
-        } else {
-            out1.println("Empate!");
-            out2.println("Empate!"); // por enquanto se empatar nao muda nada ksks vou arrumar caso empate para adicionar mais uma mão 
-        }
-
-        return resultado;
-    }
-    
-    private void mostrarPlacar() {
-        out1.println("Placar: " + dupla1.getPontuacao() + " x " + dupla2.getPontuacao());
-        out2.println("Placar: " + dupla1.getPontuacao() + " x " + dupla2.getPontuacao());
-    }
-
-    private boolean jogoTerminou() {
-        return dupla1.getPontuacao() >= 12 || dupla2.getPontuacao() >= 12;
-    }
-
-    private void finalizaJogo() {
-        if (dupla1.getPontuacao() >= 12) {
-            out1.println("Você venceu o jogo!");
-            out2.println("Você perdeu o jogo!");
-        } else {
-            out2.println("Você venceu o jogo!");
-            out1.println("Você perdeu o jogo!");
-        }
-    }
+		return 0;
+	}
 }

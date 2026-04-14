@@ -4,12 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Dupla {
-<<<<<<< HEAD
-
-=======
 	
 	private int id;
->>>>>>> refs/remotes/origin/forth
+
 	private int pontuacao;
 	private List<Jogador> dupla;
 
