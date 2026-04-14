@@ -83,7 +83,7 @@ public class Jogo implements Runnable {
         out2.println("Você é o jogador 2");
     }
 
-  // por enquanto deixei assim para testar no console 
+  // por enquanto deixei assim para testar no console ai vc ve certinho o que é cada regra e tals
     private void distribuirCartas(Baralho baralho) {
         j1.setMao(baralho.entregarCartas());
         j2.setMao(baralho.entregarCartas());
