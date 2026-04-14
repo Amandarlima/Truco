@@ -34,9 +34,10 @@ public class Jogador {
 	}
 	
 	public Carta jogarCarta(int i) {
-		
-		return this.mao.remove(i);
-		 
+	    if (i < 0 || i >= mao.size()) {
+	        throw new IllegalArgumentException("Carta inválida");
+	    }
+	    return this.mao.remove(i);
 	}
 	
 	public void receberCarta(Carta carta) {

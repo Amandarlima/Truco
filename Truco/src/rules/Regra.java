@@ -1,6 +1,6 @@
 package rules;
 
-public class regra {
+public class Regra {
 
 	//comparar cartas
 	
