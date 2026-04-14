@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Dupla {
 	
+	private int id;
 	private int pontuacao;
 	private List<Jogador> dupla;
 	
@@ -35,5 +36,13 @@ public class Dupla {
 	
 	public void addPontuacao(int pontos) {
 		this.pontuacao = this.pontuacao + pontos;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }

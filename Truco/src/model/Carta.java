@@ -2,11 +2,19 @@ package model;
 
 public class Carta {
 	
-	
+	private int id;
 	private Naipe naipe; 
 	private Modelo modelo;
 	private int peso;
 	
+	
+	public int getId () {
+		return this.id;
+	}
+	
+	public void setId (int id) {
+		this.id = id;
+	}
 	
 	public int getPeso () {
 		return this.peso;

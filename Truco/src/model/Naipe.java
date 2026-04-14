@@ -2,10 +2,10 @@ package model;
 
 public enum Naipe {
 
-	OUROS(0),
-	ESPADAS(1),
-	COPAS(2),
-	PAUS(3);
+	OUROS(1),
+	ESPADAS(2),
+	COPAS(3),
+	PAUS(4);
 	
 	private final int peso;
 

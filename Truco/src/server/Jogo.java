@@ -37,9 +37,11 @@ public class Jogo implements Runnable {
             Jogador jogador_2 = new Jogador();
             
             Dupla dupla_impar = new Dupla();
+            dupla_impar.setId(1);
             dupla_impar.addDupla(jogador_1);
             
             Dupla dupla_par = new Dupla();
+            dupla_par.setId(2);
             dupla_par.addDupla(jogador_2);
             
             while (dupla_impar.getPontuacao() < 12 || dupla_par.getPontuacao() < 12) {
