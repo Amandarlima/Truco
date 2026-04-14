@@ -5,8 +5,7 @@ public class Carta {
 	private int id;
 	private Naipe naipe; 
 	private Modelo modelo;
-	private int peso;
-	
+		
 	
 	public int getId () {
 		return this.id;
@@ -16,14 +15,6 @@ public class Carta {
 		this.id = id;
 	}
 	
-	public int getPeso () {
-		return this.peso;
-	}
-	
-	public void setPeso (int  peso) {
-		this.peso = peso;
-	}
-
 	public Modelo getModelo() {
 		return modelo;
 	}

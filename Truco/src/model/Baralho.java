@@ -12,7 +12,7 @@ public class Baralho {
 	// teste para merge
 	public Baralho() {
 
-		for (int i = 1; i < 4; i++) {
+		for (int i = 1; i <= 4; i++) {
 			for (int f = 10; f < 101; f = f + 10) {
 
 				Carta carta = new Carta();
@@ -24,7 +24,6 @@ public class Baralho {
 		}
 
 		Collections.shuffle(baralho);
-		// System.out.println(baralho);
 	}
 
 	public List<Carta> getBaralho() {

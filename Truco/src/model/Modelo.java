@@ -2,7 +2,7 @@ package model;
 
 public enum Modelo {
 
-	QUATRO(10), CINCO(20), SEIS(30), SETE(40), RAINHA(50), VALETE(60), REI(70), AS(80), DOIS(90), TRES(100);
+	QUATRO(1), CINCO(2), SEIS(3), SETE(4), RAINHA(5), VALETE(6), REI(7), AS(8), DOIS(9), TRES(10);
 
 	private int peso;
 

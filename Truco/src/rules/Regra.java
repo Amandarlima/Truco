@@ -5,86 +5,86 @@ import java.util.List;
 
 import model.Carta;
 import model.Modelo;
+import model.Rodada;
 
 public class Regra {
 
-	//comparar cartas
+	// comparar cartas
 	public void comparar_cartas(List<Carta> monte) {
-		
+
 	}
-	
+
 	public List<Carta> comparar_filtrar_cartas(List<Carta> listaOriginal) {
-	    List<Carta> listaVencedoras = new ArrayList<>();
-	    int maiorPeso = -1; 
+		List<Carta> listaVencedoras = new ArrayList<>();
+		int maiorPeso = -1;
 
-	    for (Carta cartaAtual : listaOriginal) {
-	        // Caso 1: Encontrou uma carta maior que o recorde atual
-	        if (cartaAtual.getPeso() > maiorPeso) {
-	            maiorPeso = cartaAtual.getPeso();
-	            listaVencedoras.clear();    // DESCARTA todas as anteriores menores
-	            listaVencedoras.add(cartaAtual); // Mantém apenas a nova "mais alta"
-	        } 
-	        // Caso 2: Empate (mesmo peso da maior atual)
-	        else if (cartaAtual.getPeso() == maiorPeso) {
-	            listaVencedoras.add(cartaAtual); // Adiciona junto às outras
-	        }
-	        
-	        // Caso 3: Se for menor, o código simplesmente ignora (descarta)
-	    }
-	    
-	    return listaVencedoras;
+		for (Carta cartaAtual : listaOriginal) {
+
+			int pesoAtual = cartaAtual.getModelo().getPeso();
+			// Caso 1: Encontrou uma carta maior que o recorde atual
+			if (pesoAtual > maiorPeso) {
+				maiorPeso = pesoAtual;
+				listaVencedoras.clear();
+				listaVencedoras.add(cartaAtual);
+			} else if (pesoAtual == maiorPeso) {
+				listaVencedoras.add(cartaAtual);
+			}
+
+		}
+
+		return listaVencedoras;
 	}
-	
+
 	public Carta encontrar_maior_naipe(List<Carta> cartasNaMesa) {
-	    if (cartasNaMesa == null || cartasNaMesa.isEmpty()) {
-	        return null;
-	    }
+		if (cartasNaMesa == null || cartasNaMesa.isEmpty()) {
+			return null;
+		}
 
-	    // Começamos assumindo que a primeira carta tem o naipe mais forte
-	    Carta maiorCarta = cartasNaMesa.get(0);
+		// Começamos assumindo que a primeira carta tem o naipe mais forte
+		Carta maiorCarta = cartasNaMesa.get(0);
 
-	    for (int i = 1; i < cartasNaMesa.size(); i++) {
-	        Carta cartaAtual = cartasNaMesa.get(i);
+		for (int i = 1; i < cartasNaMesa.size(); i++) {
+			Carta cartaAtual = cartasNaMesa.get(i);
 
-	        // Compara apenas o peso do enum Naipe
-	        if (cartaAtual.getNaipe().getPeso() > maiorCarta.getNaipe().getPeso()) {
-	            maiorCarta = cartaAtual;
-	        }
-	    }
+			// Compara apenas o peso do enum Naipe
+			if (cartaAtual.getNaipe().getPeso() > maiorCarta.getNaipe().getPeso()) {
+				maiorCarta = cartaAtual;
+			}
+		}
 
-	    return maiorCarta;
+		return maiorCarta;
 	}
 
-	//comparar manilhas
+	// comparar manilhas
 
 	public List<Carta> filtrar_manilhas(List<Carta> cartasNaMesa, Carta cartaVira) {
-	    List<Carta> manilhasEncontradas = new ArrayList<>();
-	    
-	    // Extraímos o modelo do objeto cartaVira recebido no parâmetro
-	    Modelo modeloDoVira = cartaVira.getModelo();
-	    Modelo modeloManilha;
 
-	    // Lógica do ciclo baseada no modelo extraído
-	    if (modeloDoVira == Modelo.TRES) {
-	        modeloManilha = Modelo.QUATRO;
-	    } else {
-	        int proximoIndice = modeloDoVira.ordinal() + 1;
-	        modeloManilha = Modelo.values()[proximoIndice];
-	    }
+		List<Carta> manilhasEncontradas = new ArrayList<>();
 
-	    // Percorre a lista de cartas da mesa verificando o modelo de cada uma
-	    for (Carta carta : cartasNaMesa) {
-	        if (carta.getModelo() == modeloManilha) {
-	            manilhasEncontradas.add(carta);
-	        }
-	    }
+		if (cartaVira == null) {
+			return manilhasEncontradas;
+		}
 
-	    return manilhasEncontradas;
+		Modelo modeloDoVira = cartaVira.getModelo();
+		Modelo modeloManilha;
+
+		if (modeloDoVira == Modelo.TRES) {
+			modeloManilha = Modelo.QUATRO;
+		} else {
+			int proximoIndice = modeloDoVira.ordinal() + 1;
+			modeloManilha = Modelo.values()[proximoIndice];
+		}
+
+		for (Carta carta : cartasNaMesa) {
+			if (carta.getModelo() == modeloManilha) {
+				manilhasEncontradas.add(carta);
+			}
+		}
+
+		return manilhasEncontradas;
 	}
-	
-	
-	
-	//verificar vitoria
+
+	// verificar vitoria
 
 	public List<Integer> verificar_vitoria(List<Carta> cartasNaMesa, Carta cartaVira) {
 		List<Integer> idsVencedores = new ArrayList<>();
@@ -113,7 +113,55 @@ public class Regra {
 
 		return idsVencedores;
 	}
-}
-	//pedir truco
 
-	//mao de onze vantagem
+	public Modelo calcularManilha(Carta cartaVira) {
+
+		if (cartaVira == null)
+			return null;
+
+		Modelo modeloDoVira = cartaVira.getModelo();
+
+		if (modeloDoVira == Modelo.TRES) {
+			return Modelo.QUATRO;
+		}
+
+		int proximoIndice = modeloDoVira.ordinal() + 1;
+		return Modelo.values()[proximoIndice];
+	}
+
+	public boolean pedirTruco(Rodada rodada) {
+
+		int valorAtual = rodada.getValor();
+
+		if (valorAtual >= 12) {
+			return false;
+		}
+
+		if (valorAtual == 1) {
+			rodada.setValor(3);
+		} else if (valorAtual == 3) {
+			rodada.setValor(6);
+		} else if (valorAtual == 6) {
+			rodada.setValor(9);
+		} else if (valorAtual == 9) {
+			rodada.setValor(12);
+		}
+
+		return true;
+	}
+
+	public boolean podePedirTruco(Rodada rodada) {
+		return rodada.getValor() < 12;
+	}
+	
+	public boolean responderTruco(String resposta) {
+
+	    if (resposta == null) return false;
+
+	    resposta = resposta.trim().toLowerCase();
+
+	    return resposta.equals("sim") || resposta.equals("s");
+	}
+}
+
+// mao de onze vantagem

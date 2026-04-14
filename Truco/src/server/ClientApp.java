@@ -8,6 +8,7 @@ public class ClientApp {
 
     public static void main(String[] args) throws Exception {
 
+    	//mudar para o ip que ta rodando o Server 
         Socket socket = new Socket("localhost", 12345);
 
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
