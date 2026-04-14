@@ -1,12 +1,27 @@
 package model;
 
 public class Carta {
-
-	private Naipe naipe;
+	
+	private int id;
+	private Naipe naipe; 
 	private Modelo modelo;
-
-	public int getPeso() {
-		return this.modelo.getPeso();
+	private int peso;
+	
+	
+	public int getId () {
+		return this.id;
+	}
+	
+	public void setId (int id) {
+		this.id = id;
+	}
+	
+	public int getPeso () {
+		return this.peso;
+	}
+	
+	public void setPeso (int  peso) {
+		this.peso = peso;
 	}
 
 	public Modelo getModelo() {
@@ -24,18 +39,18 @@ public class Carta {
 	public void setNaipe(Naipe naipe) {
 		this.naipe = naipe;
 	}
-
+	
 	public void setNaipePorValor(int valorInput) {
-		this.naipe = Naipe.fromPeso(valorInput);
-	}
-
-	public void setModeloPorPeso(int peso) {
-		this.modelo = Modelo.fromPeso(peso);
-	}
-
-	@Override
-	public String toString() {
-		return "Carta: " + this.modelo + " de " + this.naipe;
-	}
-
+        this.naipe = Naipe.fromPeso(valorInput);
+    }
+	
+    public void setModeloPorPeso(int peso) {
+        this.modelo = Modelo.fromPeso(peso);
+    }
+    
+    @Override
+    public String toString() {
+        return "Carta: " + this.modelo + " de " + this.naipe;
+    }
+	
 }

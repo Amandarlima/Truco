@@ -40,12 +40,59 @@ public class Jogo implements Runnable {
 
                 Baralho baralho = new Baralho();
 
+<<<<<<< HEAD
                 distribuirCartas(baralho);
                 mostrarCartas();
 
                 jogarRodada();
 
                 mostrarPlacar();
+=======
+            out1.println("Você é o jogador 1");
+            out2.println("Você é o jogador 2");
+            
+            Jogador jogador_1 = new Jogador();
+            Jogador jogador_2 = new Jogador();
+            
+            Dupla dupla_impar = new Dupla();
+            dupla_impar.setId(1);
+            dupla_impar.addDupla(jogador_1);
+            
+            Dupla dupla_par = new Dupla();
+            dupla_par.setId(2);
+            dupla_par.addDupla(jogador_2);
+            
+            while (dupla_impar.getPontuacao() < 12 || dupla_par.getPontuacao() < 12) {
+            	
+            	Baralho baralho = new Baralho();
+            	
+            	
+            	
+            	
+            	
+            	
+            	
+            }
+            //ainda ta implementado para dois jogadores só para teste
+            out1.println("Sua vez:");
+            String jogada1 = in1.readLine();
+            
+            switch (jogada1) {
+            	
+            case "1":
+            	
+            	jogador_1.jogarCarta();
+            	
+            	break;
+            
+            case "2":
+            	
+            	jogador_1.;
+            	
+            	break;
+            
+            
+>>>>>>> refs/remotes/origin/forth
             }
 
             finalizaJogo();

@@ -2,8 +2,16 @@ package model;
 
 public enum Naipe {
 
+<<<<<<< HEAD
 	OUROS(0), ESPADAS(1), COPAS(2), PAUS(3);
 
+=======
+	OUROS(1),
+	ESPADAS(2),
+	COPAS(3),
+	PAUS(4);
+	
+>>>>>>> refs/remotes/origin/forth
 	private final int peso;
 
 	Naipe(int peso) {
