@@ -13,13 +13,13 @@ public class Baralho {
 	public Baralho() {
 
 		for (int i = 1; i <= 4; i++) {
-			for (int f = 10; f < 101; f = f + 10) {
+			for (Modelo modelo : Modelo.values()) {
 
-				Carta carta = new Carta();
-				carta.setNaipePorValor(i);
-				carta.setModeloPorPeso(f);
-				this.baralho.add(carta);
+			    Carta carta = new Carta();
+			    carta.setNaipePorValor(i);
+			    carta.setModelo(modelo);
 
+			    this.baralho.add(carta);
 			}
 		}
 
