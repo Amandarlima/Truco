@@ -90,7 +90,6 @@ public class Jogo implements Runnable {
 				out1.println("Você perdeu o jogo!");
 			}
 
-			// proteção caso estourar erro
 		} catch (Exception e) {
 			System.out.println("Erro na comunicação com jogadores " + e.getMessage());
 			e.printStackTrace();
@@ -135,7 +134,7 @@ public class Jogo implements Runnable {
 
 				if (jogadorDaVez == 1) {
 
-					c1 = jogarTurnoComTruco(in1, out1, j1);
+					c1 = jogarTurnoComTruco(in1, out1, out2, j1, 1);
 
 					if (c1 == null) {
 
@@ -153,6 +152,10 @@ public class Jogo implements Runnable {
 						out2.println("Adversário pediu TRUCO! Aceita? (sim/nao)");
 
 						String resposta = in2.readLine();
+						if (resposta == null) {
+							out1.println("Jogador 2 desconectou.");
+							return 1;
+						}
 
 						if (!regra.responderTruco(resposta)) {
 							return 1;
@@ -167,9 +170,8 @@ public class Jogo implements Runnable {
 						out1.println("MANILHA!");
 					}
 
-					c2 = jogarTurnoComTruco(in2, out2, j2);
+					c2 = jogarTurnoComTruco(in2, out2, out1, j2, 2);
 
-					// 🔥 TRUCO - JOGADOR 2
 					if (c2 == null) {
 
 						if (!regra.podePedirTruco(rodada)) {
@@ -186,6 +188,10 @@ public class Jogo implements Runnable {
 						out1.println("Adversário pediu TRUCO! Aceita? (sim/nao)");
 
 						String resposta = in1.readLine();
+						if (resposta == null) {
+							out2.println("Jogador 1 desconectou.");
+							return 2;
+						}
 
 						if (!regra.responderTruco(resposta)) {
 							return 2;
@@ -202,7 +208,7 @@ public class Jogo implements Runnable {
 
 				} else {
 
-					c2 = jogarTurnoComTruco(in2, out2, j2);
+					c2 = jogarTurnoComTruco(in2, out2, out1, j2, 2);
 
 					if (c2 == null) {
 
@@ -220,6 +226,10 @@ public class Jogo implements Runnable {
 						out1.println("Adversário pediu TRUCO! Aceita? (sim/nao)");
 
 						String resposta = in1.readLine();
+						if (resposta == null) {
+							out2.println("Jogador 1 desconectou.");
+							return 2;
+						}
 
 						if (!regra.responderTruco(resposta)) {
 							return 2;
@@ -234,7 +244,7 @@ public class Jogo implements Runnable {
 						out2.println("MANILHA!");
 					}
 
-					c1 = jogarTurnoComTruco(in1, out1, j1);
+					c1 = jogarTurnoComTruco(in1, out1, out2, j1, 1);
 
 					if (c1 == null) {
 
@@ -252,6 +262,10 @@ public class Jogo implements Runnable {
 						out2.println("Adversário pediu TRUCO! Aceita? (sim/nao)");
 
 						String resposta = in2.readLine();
+						if (resposta == null) {
+							out1.println("Jogador 2 desconectou.");
+							return 1;
+						}
 
 						if (!regra.responderTruco(resposta)) {
 							return 1;
@@ -270,7 +284,6 @@ public class Jogo implements Runnable {
 				break;
 			}
 
-			// Resultado da mao
 			List<Carta> mesa = Arrays.asList(c1, c2);
 			List<Integer> vencedores = regra.verificar_vitoria(mesa, rodada.getVira());
 
@@ -300,7 +313,8 @@ public class Jogo implements Runnable {
 		return 0;
 	}
 
-	private Carta jogarTurnoComTruco(BufferedReader in, PrintWriter out, Jogador jogador) throws IOException {
+	private Carta jogarTurnoComTruco(BufferedReader in, PrintWriter out, PrintWriter outOponente, Jogador jogador,
+			int numeroJogador) throws IOException {
 
 		out.println("Suas cartas:");
 
@@ -311,6 +325,11 @@ public class Jogo implements Runnable {
 		out.println("Digite índice OU 'truco':");
 
 		String entrada = in.readLine();
+
+		if (entrada == null) {
+			outOponente.println("Jogador " + numeroJogador + " desconectou.");
+			throw new IOException("Jogador " + numeroJogador + " desconectou.");
+		}
 
 		if (entrada.equalsIgnoreCase("truco")) {
 			return null;
@@ -323,10 +342,11 @@ public class Jogo implements Runnable {
 				return jogador.jogarCarta(indice);
 			}
 
-		} catch (Exception e) {
-			out.println("Entrada inválida!");
+			out.println("Índice inválido!");
+		} catch (NumberFormatException e) {
+			out.println("Entrada inválida! Digite um número ou 'truco'.");
 		}
 
-		return jogarTurnoComTruco(in, out, jogador); // tenta de novo
+		return jogarTurnoComTruco(in, out, outOponente, jogador, numeroJogador);
 	}
 }
