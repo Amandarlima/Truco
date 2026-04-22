@@ -134,7 +134,7 @@ public class Jogo implements Runnable {
 
 				if (jogadorDaVez == 1) {
 
-					c1 = jogarTurnoComTruco(in1, out1, out2, j1, 1);
+					c1 = jogarTurnoComTruco(in1, out1, out2, j1, 1, rodada);
 
 					if (c1 == null) {
 
@@ -143,10 +143,7 @@ public class Jogo implements Runnable {
 							continue;
 						}
 
-						if (!rodada.isTrucoAtivo()) {
-							regra.pedirTruco(rodada);
-							rodada.setTrucoAtivo(true);
-						}
+						regra.pedirTruco(rodada);
 
 						out1.println("TRUCO! Valor: " + rodada.getValor());
 						out2.println("Adversário pediu TRUCO! Aceita? (sim/nao)");
@@ -161,7 +158,15 @@ public class Jogo implements Runnable {
 							return 1;
 						}
 
-						continue;
+						out1.println("Truco aceito! Valor da rodada: " + rodada.getValor());
+						out2.println("Truco aceito! Valor da rodada: " + rodada.getValor());
+
+						c1 = jogarTurnoComTruco(in1, out1, out2, j1, 1, rodada);
+
+						if (c1 == null) {
+							out1.println("Você precisa jogar uma carta após o truco.");
+							continue;
+						}
 					}
 
 					c1.setId(j1.getDupla().getId());
@@ -170,7 +175,7 @@ public class Jogo implements Runnable {
 						out1.println("MANILHA!");
 					}
 
-					c2 = jogarTurnoComTruco(in2, out2, out1, j2, 2);
+					c2 = jogarTurnoComTruco(in2, out2, out1, j2, 2, rodada);
 
 					if (c2 == null) {
 
@@ -179,10 +184,7 @@ public class Jogo implements Runnable {
 							continue;
 						}
 
-						if (!rodada.isTrucoAtivo()) {
-							regra.pedirTruco(rodada);
-							rodada.setTrucoAtivo(true);
-						}
+						regra.pedirTruco(rodada);
 
 						out2.println("TRUCO! Valor: " + rodada.getValor());
 						out1.println("Adversário pediu TRUCO! Aceita? (sim/nao)");
@@ -197,7 +199,15 @@ public class Jogo implements Runnable {
 							return 2;
 						}
 
-						continue;
+						out1.println("Truco aceito! Valor da rodada: " + rodada.getValor());
+						out2.println("Truco aceito! Valor da rodada: " + rodada.getValor());
+
+						c2 = jogarTurnoComTruco(in2, out2, out1, j2, 2, rodada);
+
+						if (c2 == null) {
+							out2.println("Você precisa jogar uma carta após o truco.");
+							continue;
+						}
 					}
 
 					c2.setId(j2.getDupla().getId());
@@ -208,7 +218,7 @@ public class Jogo implements Runnable {
 
 				} else {
 
-					c2 = jogarTurnoComTruco(in2, out2, out1, j2, 2);
+					c2 = jogarTurnoComTruco(in2, out2, out1, j2, 2, rodada);
 
 					if (c2 == null) {
 
@@ -217,10 +227,7 @@ public class Jogo implements Runnable {
 							continue;
 						}
 
-						if (!rodada.isTrucoAtivo()) {
-							regra.pedirTruco(rodada);
-							rodada.setTrucoAtivo(true);
-						}
+						regra.pedirTruco(rodada);
 
 						out2.println("TRUCO! Valor: " + rodada.getValor());
 						out1.println("Adversário pediu TRUCO! Aceita? (sim/nao)");
@@ -235,7 +242,15 @@ public class Jogo implements Runnable {
 							return 2;
 						}
 
-						continue;
+						out1.println("Truco aceito! Valor da rodada: " + rodada.getValor());
+						out2.println("Truco aceito! Valor da rodada: " + rodada.getValor());
+
+						c2 = jogarTurnoComTruco(in2, out2, out1, j2, 2, rodada);
+
+						if (c2 == null) {
+							out2.println("Você precisa jogar uma carta após o truco.");
+							continue;
+						}
 					}
 
 					c2.setId(j2.getDupla().getId());
@@ -244,7 +259,7 @@ public class Jogo implements Runnable {
 						out2.println("MANILHA!");
 					}
 
-					c1 = jogarTurnoComTruco(in1, out1, out2, j1, 1);
+					c1 = jogarTurnoComTruco(in1, out1, out2, j1, 1, rodada);
 
 					if (c1 == null) {
 
@@ -253,10 +268,7 @@ public class Jogo implements Runnable {
 							continue;
 						}
 
-						if (!rodada.isTrucoAtivo()) {
-							regra.pedirTruco(rodada);
-							rodada.setTrucoAtivo(true);
-						}
+						regra.pedirTruco(rodada);
 
 						out1.println("TRUCO! Valor: " + rodada.getValor());
 						out2.println("Adversário pediu TRUCO! Aceita? (sim/nao)");
@@ -271,7 +283,15 @@ public class Jogo implements Runnable {
 							return 1;
 						}
 
-						continue;
+						out1.println("Truco aceito! Valor da rodada: " + rodada.getValor());
+						out2.println("Truco aceito! Valor da rodada: " + rodada.getValor());
+
+						c1 = jogarTurnoComTruco(in1, out1, out2, j1, 1, rodada);
+
+						if (c1 == null) {
+							out1.println("Você precisa jogar uma carta após o truco.");
+							continue;
+						}
 					}
 
 					c1.setId(j1.getDupla().getId());
@@ -294,12 +314,25 @@ public class Jogo implements Runnable {
 				if (vencedor == 1) {
 					dupla1++;
 					jogadorDaVez = 1;
+					out1.println("Você venceu a mão!");
+					out2.println("Você perdeu a mão!");
 				} else {
 					dupla2++;
 					jogadorDaVez = 2;
+					out2.println("Você venceu a mão!");
+					out1.println("Você perdeu a mão!");
 				}
 
+			} else {
+				out1.println("Empate na mão!");
+				out2.println("Empate na mão!");
 			}
+
+			out1.println("Você jogou: " + c1);
+			out1.println("Oponente jogou: " + c2);
+
+			out2.println("Você jogou: " + c2);
+			out2.println("Oponente jogou: " + c1);
 
 			if (dupla1 == 2 || dupla2 == 2)
 				break;
@@ -312,9 +345,8 @@ public class Jogo implements Runnable {
 
 		return 0;
 	}
-
-	private Carta jogarTurnoComTruco(BufferedReader in, PrintWriter out, PrintWriter outOponente, Jogador jogador,
-			int numeroJogador) throws IOException {
+	private Carta jogarTurnoComTruco(BufferedReader in, PrintWriter out, PrintWriter outOponente,
+			Jogador jogador, int numeroJogador, Rodada rodada) throws IOException{
 
 		out.println("Suas cartas:");
 
@@ -322,7 +354,19 @@ public class Jogo implements Runnable {
 			out.println(i + " - " + jogador.getMao().get(i));
 		}
 
-		out.println("Digite índice OU 'truco':");
+		if (rodada.getValor() == 1) {
+			out.println("Digite índice da carta OU 'truco':");
+		} else if (rodada.getValor() == 3) {
+			out.println("Digite índice da carta OU '6':");
+		} else if (rodada.getValor() == 6) {
+			out.println("Digite índice da carta OU '9':");
+		} else if (rodada.getValor() == 9) {
+			out.println("Digite índice da carta OU '12':");
+		} else {
+			out.println("Digite índice da carta:");
+		}
+
+		out.println("Sua vez:");
 
 		String entrada = in.readLine();
 
@@ -331,7 +375,12 @@ public class Jogo implements Runnable {
 			throw new IOException("Jogador " + numeroJogador + " desconectou.");
 		}
 
-		if (entrada.equalsIgnoreCase("truco")) {
+		entrada = entrada.trim().toLowerCase();
+
+		if ((rodada.getValor() == 1 && entrada.equals("truco")) ||
+			(rodada.getValor() == 3 && entrada.equals("6")) ||
+			(rodada.getValor() == 6 && entrada.equals("9")) ||
+			(rodada.getValor() == 9 && entrada.equals("12"))) {
 			return null;
 		}
 
@@ -344,9 +393,9 @@ public class Jogo implements Runnable {
 
 			out.println("Índice inválido!");
 		} catch (NumberFormatException e) {
-			out.println("Entrada inválida! Digite um número ou 'truco'.");
+			out.println("Entrada inválida!");
 		}
 
-		return jogarTurnoComTruco(in, out, outOponente, jogador, numeroJogador);
+		return jogarTurnoComTruco(in, out, outOponente, jogador, numeroJogador, rodada);
 	}
 }
